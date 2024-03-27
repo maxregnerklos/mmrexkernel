@@ -173,7 +173,7 @@ merge_config() {
 	if [[ ! -e "${SUB_CONFIGS_DIR}/mint_${1}.config" ]]; then
 		script_echo "E: Subconfig not found on config DB!"
 		script_echo "   ${SUB_CONFIGS_DIR}/mint_${1}.config"
-		script_echo "   Make sure it is in the proper directory."
+		script_echo "   make -i sure it is in the proper directory."
 		script_echo " "
 		exit_script
 	else
@@ -189,7 +189,7 @@ get_devicedb_info() {
 	if [[ ! -e "${DEVICE_DB_DIR}/${BUILD_DEVICE_NAME}.sh" ]]; then
 		script_echo "E: Device info not found from device DB!"
 		script_echo "   ${DEVICE_DB_DIR}/${BUILD_DEVICE_NAME}.sh"
-		script_echo "   Make sure it is in the proper directory."
+		script_echo "   make -i sure it is in the proper directory."
 		script_echo " "
 		exit_script
 	else
@@ -201,7 +201,7 @@ check_defconfig() {
 	if [[ ! -e "${BUILD_CONFIG_DIR}/${BUILD_DEVICE_CONFIG}" ]]; then
 		script_echo "E: Defconfig not found!"
 		script_echo "   ${BUILD_CONFIG_DIR}/${BUILD_DEVICE_CONFIG}"
-		script_echo "   Make sure it is in the proper directory."
+		script_echo "   make -i sure it is in the proper directory."
 		script_echo ""
 		exit_script
 	else
@@ -214,21 +214,21 @@ build_kernel() {
 	script_echo " "
 
 	if [[ ${BUILD_PREF_COMPILER_VERSION} == 'rui' ]]; then
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
 	elif [[ ${BUILD_PREF_COMPILER_VERSION} == 'proton' ]]; then
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} HOSTCC=clang HOSTCXX=clang++ AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} HOSTCC=clang HOSTCXX=clang++ AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} HOSTCC=clang HOSTCXX=clang++ AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} HOSTCC=clang HOSTCXX=clang++ AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
 	elif [[ ${BUILD_PREF_COMPILER_VERSION} == 'google_snowcone' ]]; then
 		# google_snowcone (aka Clang 12 for Android) uses an additional 'LLVM=1' flag
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
 	elif [[ ${BUILD_PREF_COMPILER} == 'clang' ]]; then
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
-		make -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) CC=${BUILD_PREF_COMPILER} LLVM=1 -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
 	else
-		make -C $(pwd) ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
-		make -C $(pwd) -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) ${BUILD_DEVICE_TMP_CONFIG} LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
+		make -i -C $(pwd) -j$(nproc --all) LOCALVERSION="${LOCALVERSION}" 2>&1 | sed 's/^/     /'
 	fi
 }
 
@@ -242,7 +242,7 @@ build_image() {
 		script_echo "     Android Version: ${PLATFORM_VERSION}"
 		script_echo "Security patch level: ${PLATFORM_PATCH_LEVEL}"
 
-		${ORIGIN_DIR}/tools/make/bin/mkbootimg \
+		${ORIGIN_DIR}/tools/make -i/bin/mkbootimg \
 				  --kernel $(pwd)/arch/arm64/boot/Image \
 				  --cmdline "androidboot.selinux=permissive androidboot.selinux=permissive loop.max_part=7" --board "$DEVICE_KERNEL_BOARD" \
 				  --base $DEVICE_KERNEL_BASE --pagesize $DEVICE_KERNEL_PAGESIZE \
@@ -250,9 +250,9 @@ build_image() {
 				  --second_offset $DEVICE_SECOND_OFFSET --tags_offset $DEVICE_TAGS_OFFSET \
 				  --os_version "$PLATFORM_VERSION" --os_patch_level "$PLATFORM_PATCH_LEVEL" \
 				  --header_version $DEVICE_KERNEL_HEADER --hashtype $DEVICE_DTB_HASHTYPE \
-				  -o ${ORIGIN_DIR}/tools/make/boot.img
+				  -o ${ORIGIN_DIR}/tools/make -i/boot.img
 
-		if [[ ! -f ${ORIGIN_DIR}/tools/make/boot.img ]]; then
+		if [[ ! -f ${ORIGIN_DIR}/tools/make -i/boot.img ]]; then
 			script_echo " "
 			script_echo "E: Kernel image not built successfully!"
 			script_echo "   Errors can be fround from above."
@@ -351,39 +351,39 @@ build_package() {
 	script_echo "I: Building kernel ZIP..."
 
 	# Copy kernel image to package directory
-	mv $(pwd)/arch/arm64/boot/Image $(pwd)/tools/make/package/Image -f
+	mv $(pwd)/arch/arm64/boot/Image $(pwd)/tools/make -i/package/Image -f
 
 	# Copy DTB image to package directory
-	mv $(pwd)/arch/arm64/boot/dtb_exynos.img $(pwd)/tools/make/package/dtb.img -f
+	mv $(pwd)/arch/arm64/boot/dtb_exynos.img $(pwd)/tools/make -i/package/dtb.img -f
 
-	# Make the manifest
-	touch $(pwd)/tools/make/package/mint.prop
+	# make -i the manifest
+	touch $(pwd)/tools/make -i/package/mint.prop
 
-	echo "ro.mint.build.date=${BUILD_DATE}" > $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.build.branch=${BUILD_KERNEL_BRANCH}" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.droid.device=${BUILD_DEVICE_NAME^}" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.droid.variant=${FILE_KERNEL_CODE^}" >> $(pwd)/tools/make/package/mint.prop
+	echo "ro.mint.build.date=${BUILD_DATE}" > $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.build.branch=${BUILD_KERNEL_BRANCH}" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.droid.device=${BUILD_DEVICE_NAME^}" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.droid.variant=${FILE_KERNEL_CODE^}" >> $(pwd)/tools/make -i/package/mint.prop
 
 	if [[ ${BUILD_KERNEL_BRANCH} == "mainline" ]]; then
-		echo "ro.mint.droid.beta=false" >> $(pwd)/tools/make/package/mint.prop
-		echo "ro.mint.build.version=${KERNEL_BUILD_VERSION}" >> $(pwd)/tools/make/package/mint.prop
+		echo "ro.mint.droid.beta=false" >> $(pwd)/tools/make -i/package/mint.prop
+		echo "ro.mint.build.version=${KERNEL_BUILD_VERSION}" >> $(pwd)/tools/make -i/package/mint.prop
 	else
-		echo "ro.mint.droid.beta=true" >> $(pwd)/tools/make/package/mint.prop
-		echo "ro.mint.build.version=${GITHUB_RUN_NUMBER}" >> $(pwd)/tools/make/package/mint.prop
+		echo "ro.mint.droid.beta=true" >> $(pwd)/tools/make -i/package/mint.prop
+		echo "ro.mint.build.version=${GITHUB_RUN_NUMBER}" >> $(pwd)/tools/make -i/package/mint.prop
 	fi
 	
-	echo "ro.mint.droid.android=${BUILD_ANDROID_PLATFORM}" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.droid.platform=11-${BUILD_ANDROID_PLATFORM}" >> $(pwd)/tools/make/package/mint.prop
+	echo "ro.mint.droid.android=${BUILD_ANDROID_PLATFORM}" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.droid.platform=11-${BUILD_ANDROID_PLATFORM}" >> $(pwd)/tools/make -i/package/mint.prop
 
 	# Device support
-	echo "ro.mint.device.name1=${BUILD_DEVICE_NAME}" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.device.name2=${BUILD_DEVICE_NAME}xx" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.device.name3=${BUILD_DEVICE_NAME}dd" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.device.name4=${BUILD_DEVICE_NAME}ser" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.device.name5=${BUILD_DEVICE_NAME}ltn" >> $(pwd)/tools/make/package/mint.prop
-	echo "ro.mint.device.name6=${BUILD_DEVICE_NAME}*" >> $(pwd)/tools/make/package/mint.prop
+	echo "ro.mint.device.name1=${BUILD_DEVICE_NAME}" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.device.name2=${BUILD_DEVICE_NAME}xx" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.device.name3=${BUILD_DEVICE_NAME}dd" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.device.name4=${BUILD_DEVICE_NAME}ser" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.device.name5=${BUILD_DEVICE_NAME}ltn" >> $(pwd)/tools/make -i/package/mint.prop
+	echo "ro.mint.device.name6=${BUILD_DEVICE_NAME}*" >> $(pwd)/tools/make -i/package/mint.prop
 
-	cd $(pwd)/tools/make/package
+	cd $(pwd)/tools/make -i/package
 
 	zip -9 -r ./${FILE_OUTPUT} ./* 2>&1 | sed 's/^/     /'
 	mv ./${FILE_OUTPUT} ${BUILD_KERNEL_OUTPUT}
@@ -478,9 +478,9 @@ if [[ ${SCRIPT_SHOW_HELP} == 'true' ]]; then
 fi
 
 # Build variables - DO NOT CHANGE
-VERSION=$(grep -m 1 VERSION "$(pwd)/Makefile" | sed 's/^.*= //g')
-PATCHLEVEL=$(grep -m 1 PATCHLEVEL "$(pwd)/Makefile" | sed 's/^.*= //g')
-SUBLEVEL=$(grep -m 1 SUBLEVEL "$(pwd)/Makefile" | sed 's/^.*= //g')
+VERSION=$(grep -m 1 VERSION "$(pwd)/make -ifile" | sed 's/^.*= //g')
+PATCHLEVEL=$(grep -m 1 PATCHLEVEL "$(pwd)/make -ifile" | sed 's/^.*= //g')
+SUBLEVEL=$(grep -m 1 SUBLEVEL "$(pwd)/make -ifile" | sed 's/^.*= //g')
 
 BUILD_KERNEL_BRANCH=${GITHUB_REF##*/}
 BUILD_DATE=$(date +%s)
@@ -517,7 +517,7 @@ BUILD_DEVICE_OUTPUT=${BUILD_OUTPUT_DIR}/${BUILD_DEVICE_NAME}
 if [[ ! -e "${DEVICE_DB_DIR}/kernel_info.sh" ]]; then
 	script_echo "E: Kernel info not found from DB!"
 	script_echo "   ${DEVICE_DB_DIR}/kernel_info.sh"
-	script_echo "   Make sure it is in the proper directory."
+	script_echo "   make -i sure it is in the proper directory."
 	script_echo " "
 	exit_script
 else
@@ -573,8 +573,8 @@ if [[ ${BUILD_KERNEL_DIRTY} == 'true' ]]; then
 else
 	script_echo " "
 	script_echo "I: Clean build!"
-	make CC=${BUILD_PREF_COMPILER} clean 2>&1 | sed 's/^/     /'
-	make CC=${BUILD_PREF_COMPILER} mrproper 2>&1 | sed 's/^/     /'
+	make -i CC=${BUILD_PREF_COMPILER} clean 2>&1 | sed 's/^/     /'
+	make -i CC=${BUILD_PREF_COMPILER} mrproper 2>&1 | sed 's/^/     /'
 fi
 
 check_defconfig
@@ -587,7 +587,7 @@ merge_config variant_${BUILD_KERNEL_CODE}
 
 if [[ ${BUILD_KERNEL_PERMISSIVE} == 'true' ]]; then
 	script_echo "WARNING! You're building this kernel in permissive mode!"
-	script_echo "         This is insecure and may make your device vulnerable"
+	script_echo "         This is insecure and may make -i your device vulnerable"
 	script_echo "         This kernel has NO RESPONSIBILITY on whatever happens next."
 	merge_config selinux-permissive
 fi
