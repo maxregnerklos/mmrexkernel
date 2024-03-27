@@ -252,7 +252,7 @@ build_image() {
 				  --header_version $DEVICE_KERNEL_HEADER --hashtype $DEVICE_DTB_HASHTYPE \
 				  -o ${ORIGIN_DIR}/tools/make -i /boot.img
 
-		if [[ ! -f ${ORIGIN_DIR}/tools/make -i /boot.img ]]; then
+		if [[ ! -f ${ORIGIN_DIR}/tools/make  /boot.img ]]; then
 			script_echo " "
 			script_echo "E: Kernel image not built successfully!"
 			script_echo "   Errors can be fround from above."
